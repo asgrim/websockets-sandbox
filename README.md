@@ -34,6 +34,6 @@ I used [Ubuntu](http://www.ubuntu.com/) for this. I already had Apache pointing 
 #### Hit it
 Open as many tabs as you wish with different user IDs...
 
-* http://localhost/websockets-sandbox/?1
-* http://localhost/websockets-sandbox/?2
-* http://localhost/websockets-sandbox/?3 etc.
+* [http://localhost/websockets-sandbox/?1](http://localhost/websockets-sandbox/?1)
+* [http://localhost/websockets-sandbox/?2](http://localhost/websockets-sandbox/?2)
+* [http://localhost/websockets-sandbox/?3](http://localhost/websockets-sandbox/?3) etc.
