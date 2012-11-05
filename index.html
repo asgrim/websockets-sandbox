@@ -1,0 +1,69 @@
+<html>
+<head>
+	<title>WS testing lolz</title>
+	<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+<p>User id: <input type="text" id="user_id" name="user_id" value="1" />
+<input type="button" onclick="setUserId()" value="set user ID" /></p>
+<input type="button" onclick="getConnectedUsers()" value="get connected usrs" />
+
+<p><textarea id="userlist" rows="15" cols="80"></textarea></p>
+
+<p><strong>Send message to user:</strong><br />
+Message: <input type="text" id="msg" name="msg" value="" />
+User: <input type="text" id="msg_to" name="msg_to" value="" />
+<input type="button" onclick="sendMessage()" value="send message" /></p>
+
+<script type="text/javascript">
+	// Yeah, I was so lazy I couldn't even be bothered to use a library...
+	function $(id)
+	{
+		return document.getElementById(id);
+	}
+	$('user_id').value = location.search.replace(/\?/, '');
+
+	var socket = io.connect('http://localhost:8080');
+
+	socket.on('connected', function(data) {
+		setUserId();
+	});
+
+	socket.on('getConnectedUsersResponse', function(data) {
+		var str  = "User\tMe\tSocket\t\t\tDate\n";
+		str     += "----\t--\t------\t\t\t----\n";
+		for(var i = 0; i < data.length; i++)
+		{
+			var me = (data[i].userId == $('user_id').value) ? 'Yes' : 'No';
+			str += data[i].userId + '\t' + me + '\t' + data[i].socketId + '\t' + data[i].connectedTime + '\n';
+		}
+		$('userlist').innerText = str;
+	});
+
+	socket.on('message', function(data) {
+		alert('From: ' + data.from + '\nTo: ' + data.to + '\nMessage: ' + data.message);
+	});
+
+	function setUserId()
+	{
+		socket.emit('setUserId', {userId: $('user_id').value});
+	}
+
+	function getConnectedUsers()
+	{
+		socket.emit("getConnectedUsers");
+	}
+
+	function sendMessage()
+	{
+		socket.emit('sendMessage', {
+			recipient: $('msg_to').value,
+			message: $('msg').value
+		});
+		$('msg').value = '';
+	}
+
+</script>
+</body>
+</html>
